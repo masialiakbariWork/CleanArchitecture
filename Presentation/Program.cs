@@ -1,11 +1,13 @@
 using Application;
 using Domain;
 using Presentation;
+using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services
+    .AddInfrastructure()
     .AddApplication()
     .AddPresentation()
     .AddDomain();
