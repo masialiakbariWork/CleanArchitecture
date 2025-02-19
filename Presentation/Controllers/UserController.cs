@@ -1,4 +1,4 @@
-﻿using Application.User.Commands;
+﻿using Application.Users.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,14 +16,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(string name, string family, string email)
+    public async Task<IActionResult> Create(string firstName, string lastName, string email, string passwordHash)
     {
-        var command = new CreateUserCommand()
-        {
-            Name = name,
-            Family = family,
-            Email = email
-        };
+        var command = new CreateUserCommand(firstName, lastName, email, passwordHash);
         var response = await _sender.Send(command);
         return Ok(response);
     }

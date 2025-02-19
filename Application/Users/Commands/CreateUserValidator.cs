@@ -1,16 +1,16 @@
 ﻿using FluentValidation;
 
-namespace Application.User.Commands;
+namespace Application.Users.Commands;
 
 public class CreateUserValidator: AbstractValidator<CreateUserCommand>
 {
     public CreateUserValidator()
     {
-        RuleFor(x => x.Name)
+        RuleFor(x => x.FirstName)
             .NotNull()
             .NotEmpty();
 
-        RuleFor(x => x.Family)
+        RuleFor(x => x.LastName)
             .NotNull()
             .NotEmpty();
 
