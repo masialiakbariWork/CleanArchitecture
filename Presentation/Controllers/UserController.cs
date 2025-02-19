@@ -1,25 +1,67 @@
 ﻿using Application.Users.Commands;
+using Application.Users.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Presentation.Controllers;
+namespace CleanArchitecture.Presentation.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : ControllerBase
+public class UsersController : ControllerBase
 {
-    private readonly ISender _sender;
+    private readonly IMediator _mediator;
 
-    public UserController(ISender sender)
+    public UsersController(IMediator mediator)
     {
-        _sender = sender;
+        _mediator = mediator;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Create(string firstName, string lastName, string email, string passwordHash)
+    // دریافت لیست همه کاربران
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
     {
-        var command = new CreateUserCommand(firstName, lastName, email, passwordHash);
-        var response = await _sender.Send(command);
-        return Ok(response);
+        var users = await _mediator.Send(new GetAllUsersQuery());
+        return Ok(users);
+    }
+
+    // دریافت کاربر بر اساس ID
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var user = await _mediator.Send(new GetUserByIdQuery(id));
+        if (user == null)
+            return NotFound();
+        return Ok(user);
+    }
+
+    // افزودن کاربر جدید
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
+    {
+        var userId = await _mediator.Send(command);
+        return CreatedAtAction(nameof(GetById), new { id = userId }, null);
+    }
+
+    // ویرایش اطلاعات کاربر
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserCommand command)
+    {
+        if (id != command.Id)
+            return BadRequest();
+
+        var result = await _mediator.Send(command);
+        if (!result)
+            return NotFound();
+        return NoContent();
+    }
+
+    // حذف کاربر
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var result = await _mediator.Send(new DeleteUserCommand(id));
+        if (!result)
+            return NotFound();
+        return NoContent();
     }
 }
