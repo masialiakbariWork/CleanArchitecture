@@ -2,7 +2,6 @@
 using Domain;
 using Presentation;
 using Infrastructure;
-using Domain.Interfaces;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,9 +17,6 @@ builder.Services
 // تنظیمات مربوط به EF Core و دیتابیس
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CleanArchDB")));
-
-// تنظیمات Dependency Injection برای UserRepository
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddControllers();
 
