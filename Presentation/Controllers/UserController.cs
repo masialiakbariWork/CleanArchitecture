@@ -20,11 +20,15 @@ public class UsersController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var users = await _mediator.Send(new GetAllUsersQuery());
-        return Ok(users);
+        var allUsers = await _mediator.Send(new GetAllUsersQuery());
+        return Ok(allUsers);
     }
 
-    // دریافت کاربر بر اساس ID
+    /// <summary>
+    /// دریافت کاربر
+    /// </summary>
+    /// <param name="id">شناسه ی کاربر</param>
+    /// <returns>کاربر</returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {

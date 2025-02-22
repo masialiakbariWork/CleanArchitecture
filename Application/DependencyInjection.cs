@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Application.Users.Commands;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;

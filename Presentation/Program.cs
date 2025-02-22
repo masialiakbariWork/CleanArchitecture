@@ -15,8 +15,8 @@ builder.Services
     .AddDomain();
 
 // تنظیمات مربوط به EF Core و دیتابیس
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CleanArchDB")));
+var connectionString = builder.Configuration.GetConnectionString("CleanArchDB");
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddControllers();
 

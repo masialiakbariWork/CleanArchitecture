@@ -13,6 +13,9 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IEnumer
         _userRepository = userRepository;
     }
 
+    /// <summary>
+    /// لیست تمام کاربران را بر می گرداند
+    /// </summary>
     public async Task<IEnumerable<User>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
         return await _userRepository.GetAllAsync();
