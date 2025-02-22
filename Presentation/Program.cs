@@ -4,6 +4,7 @@ using Presentation;
 using Infrastructure;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Presentation.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+
+// اضافه کردن ExceptionMiddleware برای مدیریت خطاها
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 

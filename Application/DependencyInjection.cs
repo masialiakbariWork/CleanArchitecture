@@ -1,5 +1,7 @@
-﻿using Application.Users.Commands;
+﻿using Application.Common.Behaviours;
+using Application.Users.Commands;
 using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
@@ -11,6 +13,9 @@ public static class DependencyInjection
         var assembly = typeof(DependencyInjection).Assembly;
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(assembly));
         services.AddValidatorsFromAssembly(assembly);
+
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+
         return services;
     }
 }
